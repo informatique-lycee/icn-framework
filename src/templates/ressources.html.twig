@@ -1,0 +1,168 @@
+{% extends 'base.html.twig' %}
+
+{% block header %}
+
+  <!-- fin de la boite modal -->
+
+  <nav id="mainNav" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <!-- Brand and toggle get grouped for better mobile display -->
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+          <span class="sr-only">Toggle navigation</span>
+          Menu
+          <i class="fa fa-bars"></i>
+        </button>
+        <a class="navbar-brand page-scroll" href="index.php">ICN au lycée</a>
+      </div>
+
+      <!-- Collect the nav links, forms, and other content for toggling -->
+      <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+        <ul class="nav navbar-nav navbar-right">
+          <li>
+            <a href="index.php">Accueil</a>
+          </li>
+          <li>
+            <a href="index.php?page=informatique">Informatique</a>
+          </li>
+          <li>
+            <a href="index.php?page=creation">Création</a>
+          </li>
+          <li>
+            <a href="index.php?page=numerique">Numérique</a>
+          </li>
+        </ul>
+      </div>
+      <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container-fluid -->
+  </nav>
+{% endblock %}
+{% block main %}
+  <div class='container'>
+    {% for categorieId, categorie in categories %}
+      {% if category is same as(categorieId) %}
+        <div class="row">
+          <div class="col-sm-12">
+            <div class="jumbotron">
+              {% block introduction %}
+                <h2>
+                  {{categorie.titre}}</h2>
+                <p style="text-align:justify;">
+                  {{categorie.commentaire}}</p>
+              {% endblock %}
+            </div>
+          </div>
+        </div>
+      {% endif %}
+    {% endfor %}
+    {% for sectionId, section in sections %}
+      {% if section.category is same as(category) %}
+        {% set compteur = 0 %}
+        <div class="row">
+          <div class="col-sm-12">
+            <div class="thumbnail">
+              <div class="caption">
+                <h3>{{section.titre}}</h3>
+                <p>
+                  {{section.commentaire}}
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- les activites -->
+        <div class='row'>
+          {% for ressource in activites %}
+            {% if ressource.section is same as(sectionId) %}
+              {% set passed = false %}
+              <div class="col-sm-6 col-md-4 col-lg-3">
+                <div class="thumbnail">
+                  {% if ressource.image is defined %}
+                    <img src="images/ressources/{{ressource.image}}" alt="">
+                  {% endif %}
+                  <div class="caption">
+                    {% if ressource.icon is defined %}
+                      <div class="text-center">
+                        <i class="fa-5x {{ressource.icon}}"></i>
+                      </div>
+                    {% endif %}
+                    <h3>{{ressource.titre}}
+                      <small>{{ressource.auteur}}</small>
+                    </h3>
+                    <p>
+                      {{ressource.commentaire|raw}}
+                    </p>
+                    {% if ressource.ps is not empty %}
+                      <p>
+                        <em>
+                          <small>
+                            PS :
+                            {{ressource.ps}}
+                          </small>
+                        </em>
+                      </p>
+                    {% endif %}
+                    {% if ressource.URL is not empty %}
+                      <p>
+                        {% if ressource.remoteURL is not empty and not is_local_ip %}
+                          <a href="{{ressource.remoteURL}}" target="_blank" class="btn btn-primary">visiter le site</a>
+                        {% else %}
+                          <a href="{{ressource.URL}}" target="_blank" class="btn btn-primary">visiter le site</a>
+                        {% endif %}
+                      </p>
+                    {% endif %}
+                    {% if ressource.video is not empty %}
+                      <button type="button" class="btn btn-primary" data-toggle="modal" data-video="{{ressource.video}}" data-target="#VideoModal">
+                        Voir la vidéo
+                        <i class="fa fa-film"></i>
+                      </button>
+                    {% endif %}
+                    {% if ressource.level is defined %}
+                      <p>
+                        <em>
+                          <small>difficulté :
+                            {{ressource.level}}</small>
+                        </em>
+                      </p>
+                    {% endif %}
+                  </div>
+                </div>
+              </div>
+              {% set compteur = compteur + 1 %}
+              {% if compteur is divisibleby(2) %}
+                <div class="clearfix visible-sm-block"></div>
+              {% endif %}
+              {% if compteur is divisibleby(3) %}
+                <div class="clearfix visible-md-block"></div>
+              {% endif %}
+              {% if compteur is divisibleby(4) %}
+                <div class="clearfix visible-lg-block"></div>
+              {% endif %}
+              {% set passed = true %}
+
+            {% endif %}
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endfor %}
+  </div>
+</body>
+{% endblock %}
+
+{% block javascriptExtension %}
+{% if is_local_ip %}
+  <script type='text/javascript'>
+    $('body').on('hidden.bs.modal', '#VideoModal', function() {
+      $('video').trigger('pause');
+    });
+  </script>
+{% else %}
+  <script type='text/javascript'>
+    $('#myModal').on('hide', function() {
+      $('#VideoModal div.modal-body').html('&nbsp;');
+    });
+  </script>
+{% endif %}
+
+{% endblock %}

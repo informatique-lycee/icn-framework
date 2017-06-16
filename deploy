@@ -1,0 +1,83 @@
+#!/bin/bash
+# Usage info
+show_help() {
+cat << EOF
+Usage: ${0##*/} [-h]  [-u username] [-v] [-d directory]
+Do stuff with FILE and write the result to standard output. With no FILE
+or when FILE is -, read standard input.
+
+    -h          display this help and exit
+    -d  directory  the directory to install the module into. If not specified, default to /var/www/icn/
+    -v  verbose mode
+    -u  if specified, changes all specific subdirectories owner to this user
+EOF
+}
+
+if [ -z "$ICN_FWK_ROOT" ]; then
+  directory="/var/www/icn/"
+fi
+
+verbose=0
+
+while [ "$1" != "" ]; do
+  case $1 in
+    -h|-\?|--help)   # Call a "show_help" function to display a synopsis, then exit.
+    show_help
+    exit
+    ;;
+
+    -d|--dir)       # Takes an option argument, ensuring it has been specified.
+    if [ -n "$2" ]; then
+      directory=$2
+      shift
+    else
+      printf 'ERROR: "--dir" requires a non-empty option argument.\n' >&2
+      exit 1
+    fi
+    ;;
+
+    -v|--verbose)
+    verbose=$((verbose + 1)) # Each -v argument adds 1 to verbosity.
+    ;;
+
+    -u|--user)
+    if [ -n "$2" ]; then
+      user=$2
+      shift
+    else
+      printf 'ERROR: "--user" requires a non-empty option argument.\n' >&2
+      exit 1
+    fi
+    ;;
+
+    --)              # End of all options.
+    shift
+    break
+    ;;
+
+    -?*)
+    printf 'WARN: Unknown option (ignored): %s\n' "$1" >&2
+    ;;
+
+    *)               # Default case: If no more options then break out of the loop.
+    break
+  esac
+  shift
+done
+
+cp src/conf.origin.php src/index.php src/loaders.php $directory
+cp -R src/fonts $directory
+cp -R src/ressources $directory
+cp -R src/templates $directory
+cp -R src/lib $directory
+cp -R src/javascript $directory
+cp -R src/images $directory
+mkdir -p $directory/style
+cp -R src/style/*css $directory/style
+cp -R src/style/*map $directory/style
+mkdir -p src/style/highlight
+cp -R src/style/highlight $directory/style
+
+if [ ! -e $directory/conf.php ]; then
+  cp src/conf.origin.php $directory/conf.php
+fi

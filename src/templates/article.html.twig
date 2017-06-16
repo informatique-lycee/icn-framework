@@ -1,0 +1,55 @@
+{% extends 'base.html.twig' %}
+
+{% block header %}
+
+	<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+		<div class="container">
+
+			<div class="navbar-header floating-navbar-header">
+
+				<a class="navbar-brand" href="index.php">
+					ICN au Lycée</a>
+				<span class="navbar-brand"> {{titre}} </span>
+			</div>
+			<div class="nav">
+
+			</div>
+		</div>
+
+	</nav>
+{% endblock %}
+
+{% block mainfooter %}
+	{% if page_precedente is not empty or page_suivante is not empty %}
+	<div class="row">
+		<div class="cours">
+			{% if page_precedente != ""  %}
+
+								<a class="pull-left" href="index.php?page={{page_precedente}}{% if activite is not empty %}&activite={{activite}}{% endif %}">
+									<button class="btn btn-primary navbar-btn">
+										<i class="fa fa-caret-left"> </i> {{nom_page_precedente}}
+								</button></a>
+
+			{% endif %}
+
+			{% if page_suivante != "" %}
+
+								<a class="pull-right" href="index.php?page={{page_suivante}}{% if activite is not empty %}&activite={{activite}}{% endif %}">
+									<button class="btn btn-primary navbar-btn">
+										{{nom_page_suivante}} <i class="fa fa-caret-right"> </i>
+									</button>
+								</a>
+
+			{% endif %}
+		</div>
+	</div>
+	{% endif %}
+{% endblock %}
+
+
+{% block javascriptExtension %}
+<script src="javascript/ace/src-noconflict/ace.js" type="text/javascript" charset="utf-8">
+</script>
+<script src="javascript/site/exemples.js" type="text/javascript" charset="utf-8">
+</script>
+{% endblock %}

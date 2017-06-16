@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="fr">
+  {% block head %}
+    <head>
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <meta charset="UTF-8">
+      {% block title %}
+        <title>ICN au Lycée
+          {% if titre is defined %}
+            :
+            {{titre}}
+          {% endif %}
+        </title>
+      {% endblock %}
+      <!-- Bootstrap -->
+      <link href="style/bootstrap.min.css" rel="stylesheet">
+      <!--
+		<link href="style/bootstrap-theme.min.css" rel="stylesheet">
+		-->
+      <link href="style/font-awesome.min.css" rel="stylesheet">
+      <!-- in your header -->
+      <link rel="stylesheet" href="style/devicon.min.css">
+      <link href="style/highlight/tomorrow-night.css" rel="stylesheet">
+      <link href="style/sidebar.css" rel="stylesheet">
+      {% if css %}
+        <link href="{{css}}" rel="stylesheet">
+      {% endif %}
+      {% block headExtension %}{% endblock %}
+    </head>
+  {% endblock %}
+  {% block body %}
+    <body style="">
+      <div id="wrapper">
+        {% block modals %}
+          <!-- Modal pour afficher la vidéo -->
+          <div class="modal fade" id="VideoModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content"></div>
+            </div>
+          </div>
+
+          <!-- Modal pour afficher le javascript -->
+          <div class="modal fade" id="JavascriptModal" tabindex="-1" role="dialog" aria-labelledby="JavascriptModalLabel">
+            <div class="modal-dialog modal-dialog-fullscreen" role="document">
+              <div class="modal-content modal-content-fullscreen"></div>
+            </div>
+          </div>
+
+        {% endblock %}
+
+        {% block sommaire %}{% endblock %}
+
+        {% block header %}{% endblock %}
+
+        <div id="page-content-wrapper">
+          <div class="container">
+            {% block main %}{% endblock %}
+
+            {% block mainfooter %}{% endblock %}
+
+            {% block footer %}{% endblock %}
+          </div>
+        </div>
+      </div>
+    </body>
+  {% endblock %}
+  {% block javascript %}
+    <!-- Bibliotheques javascript standard -->
+    {% if config.use_cdn %}
+    <!-- Utilisation avec CDN -->
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.0/jquery.min.js">
+    </script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.min.js">
+    </script>
+    <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.10.0/highlight.min.js">
+    </script>
+    <script>
+        hljs.initHighlightingOnLoad();
+    </script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js">
+    </script>
+
+    {% else %}
+    <!-- Utilisation de versions locales -->
+      <script type="text/javascript" src="javascript/libraries/jquery-3.2.0.min.js"></script>
+      <script type="text/javascript" src="javascript/libraries/jquery.easing.1.3.js"></script>
+      <script type="text/javascript" src="javascript/libraries/highlight.pack.js"></script>
+      <script>
+          hljs.initHighlightingOnLoad();
+      </script>
+      <script type="text/javascript" src="javascript/libraries/bootstrap.min.js"></script>
+
+    {% endif %}
+    <!-- Bibliotheques Javascript personnalisées -->
+    <script type="text/javascript" src="javascript/site/myModernizr.js"></script>
+    <script type="text/javascript" src="javascript/site/functions.js"></script>
+    <!-- Activation des tooltips dans bootstrap -->
+    <script type="text/javascript">
+      $(function() {
+        $('[data-toggle="tooltip"]').tooltip()
+      })
+    </script>
+    <!-- Fallback SVG pour ie8 -->
+    <script type="text/javascript">
+      if (!Modernizr.svgasimg) {
+        var imgs = document.getElementsByTagName('img');
+        var svgExtension = /.*\.svg$/;
+        var l = imgs.length;
+        for (var i = 0; i < l; i++) {
+          if (imgs[i].src.match(svgExtension)) {
+            imgs[i].src = imgs[i].src.slice(0, -3) + 'png';
+          }
+        }
+      }
+    </script>
+
+    <script type="text/javascript">
+      <!-- Menu Toggle Script -->
+      $("#menu-toggle").click(function(e) { e.preventDefault(); $("#wrapper").toggleClass("toggled"); });
+    </script>
+  {% endblock %}
+  {% block javascriptExtension %}{% endblock %}
+</html>

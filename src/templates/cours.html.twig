@@ -1,0 +1,125 @@
+{% extends 'base.html.twig' %}
+
+{% block header %}
+
+	<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+		<div class="container">
+
+			<div class="navbar-header floating-navbar-header">
+				<ul class="nav navbar-nav navbar-left floating-navbar-left" style="margin-right:3ex;">
+					<li>
+						<button id="menu-toggle" type="button" class="btn btn-default navbar-btn">
+							Menu
+						<span class="fa fa-bars"></span>
+					</button>
+					</li>
+				</ul>
+				<a class="navbar-brand" href="index.php">
+					ICN au Lycée</a>
+				<span class="navbar-brand"><small>{{sommaire.titre}} : {{titre}}</small></span>
+			</div>
+			<div class="nav">
+
+				<ul class="nav navbar-nav navbar-right floating-navbar-right ">
+					{% if page_precedente != ""  %}
+						<li>
+							<div class="btn-group">
+								<a class="navbar-btn"
+								href="index.php?page={{page_precedente}}{% if activite is not empty %}&activite={{activite}}{% endif %}">
+									<button class="btn btn-primary navbar-btn" data-toggle="tooltip" title="{{nom_page_precedente}}" data-placement="bottom">
+										<i class="fa fa-caret-left"> </i>
+								</button></a>
+							</div>
+						</li>
+					{% endif %}
+
+					{% if page_suivante != "" %}
+						<li>
+							<div class="btn-group">
+								<a href="index.php?page={{page_suivante}}{% if activite is not empty %}&activite={{activite}}{% endif %}">
+									<button class="btn btn-primary navbar-btn" data-toggle="tooltip" title="{{nom_page_suivante}}" data-placement="bottom">
+										<i class="fa fa-caret-right"> </i>
+									</button>
+								</a>
+							</div>
+						</li>
+					{% endif %}
+				</ul>
+			</div>
+		</div>
+
+	</nav>
+
+	<!-- Sidebar -->
+        <div id="sidebar-wrapper">
+            <ul class="sidebar-nav">
+                <li class="sidebar-brand">
+                	<span onclick='$("#wrapper").toggleClass("toggled");'
+                		>{{sommaire.titre}} <i class="fa fa-bars"></i></span>
+
+                </li>
+                <li>
+                	<hr>
+                </li>
+                <li>
+                		<a href="index.php">
+                		Retour à l'accueil<i class="fa fa-home"></i>
+                		</a>
+                </li>
+                <li>
+                      <span
+               			data-toggle="modal"
+						data-target="#JavascriptModal" >
+                     	Afficher l'éditeur<i class="fa fa-eye"></i>
+                    </span>
+                </li>
+                <li>
+                	<hr>
+                </li>
+        	    {% for entree in sommaire.contenu %}
+
+				<li class="chapitres">
+					<a href="index.php?page={{entree}}{% if activite is not empty %}&activite={{activite}}{% endif %}">
+               		{{pages[entree].titre}}
+               	</a>
+               </li>
+               {% endfor %}
+            </ul>
+        </div>
+<!-- /#sidebar-wrapper -->
+{% endblock %}
+
+{% block mainfooter %}
+	{% if page_precedente is not empty or page_suivante is not empty %}
+	<div class="row">
+		<div class="cours">
+			{% if page_precedente != ""  %}
+
+								<a class="pull-left" href="index.php?page={{page_precedente}}{% if activite is not empty %}&activite={{activite}}{% endif %}">
+									<button class="btn btn-primary navbar-btn">
+										<i class="fa fa-caret-left"> </i> {{nom_page_precedente}}
+								</button></a>
+
+			{% endif %}
+
+			{% if page_suivante != "" %}
+
+								<a class="pull-right" href="index.php?page={{page_suivante}}{% if activite is not empty %}&activite={{activite}}{% endif %}">
+									<button class="btn btn-primary navbar-btn">
+										{{nom_page_suivante}} <i class="fa fa-caret-right"> </i>
+									</button>
+								</a>
+
+			{% endif %}
+		</div>
+	</div>
+	{% endif %}
+{% endblock %}
+
+
+{% block javascriptExtension %}
+<script src="javascript/ace/src-noconflict/ace.js" type="text/javascript" charset="utf-8">
+</script>
+<script src="javascript/site/exemples.js" type="text/javascript" charset="utf-8">
+</script>
+{% endblock %}
