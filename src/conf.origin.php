@@ -4,5 +4,7 @@ $config=array(
   "has_local"=>false,
   "debug"=>false,
   "template_dir"=>"templates",
-  "use_cdn"=>true
+  "use_cdn"=>true,
+  "TWIG_PATH"=>'Twig'
+
 );

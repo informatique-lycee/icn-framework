@@ -6,7 +6,7 @@ $sections=array();
 $activites = array();
 
 require_once 'lib/site/functions.php';
-require_once 'lib/Twig/Autoloader.php';
+require_once $config['TWIG_PATH']."/Autoloader.php";
 
 Twig_autoloader::register();
 // Locale set globally for twig templates
