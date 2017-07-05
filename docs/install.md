@@ -37,4 +37,4 @@ export ICN_FWK_ROOT=/srv/web/icn/
  ```
 
 ## configuration
-le fichier de configuration conf.origin.php est placé dans votre répertoire sous le nom conf.php (mais si vous avez déjà une configuration, elle ne sera pas écrasée). Éditez la configuration dans ce fichier avec votre éditeur de texte favori. Pour connaître les éléments de syntaxe, vous pouvez consulter [la documentation sur la configuration](config.md)
+le fichier de configuration conf.origin.php est placé dans votre répertoire sous le nom conf.php (mais si vous avez déjà une configuration, elle ne sera pas écrasée). Éditez la configuration dans ce fichier avec votre éditeur de texte favori. Pour connaître les éléments de syntaxe, vous pouvez consulter [la documentation sur la configuration](./config.md)
