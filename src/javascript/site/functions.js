@@ -86,7 +86,20 @@ $('#JavascriptModal').on('show.bs.modal', function (event) {
   			newUrl2load=newUrl2load+'&activite='+activite;
   		}
 
-
+		$("#JavascriptModal div.modal-content")
+			.load(url2load,function(){
+				activeJavascript = script;
+				$.getJSON(newUrl2load, {}, function(data) {
+					if ($.data($("body")[0],'plugin_icnExercices') !== undefined) {
+						$.data($("body")[0],'plugin_icnExercices').init(data);
+            console.log("reInitialisation du plugin");
+					} else {
+  					$("body").icnExercices(data);
+            console.log("première instantiation du plugin");
+					}
+				});
+			});
+		/*
   		$.ajax({
   			url:url2load,
   			dataType:'text'
@@ -106,7 +119,7 @@ $('#JavascriptModal').on('show.bs.modal', function (event) {
 					}
   			});
   		});
-
+			*/
 	}
 
 });
