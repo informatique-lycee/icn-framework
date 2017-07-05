@@ -97,7 +97,9 @@ $('#JavascriptModal').on('show.bs.modal', function (event) {
   				url:newUrl2load,
   				dataType:'json'
   			}).done(function(data){
-  				examples.init(data,script);
+					console.log(data);
+          console.log("chargement de icnExercices")
+  				$("body").icnExercices(data);
   			});
   		});
 
