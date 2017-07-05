@@ -36,7 +36,6 @@
     // The actual plugin constructor
     function Plugin( element, options ) {
         this.element = element;
-        this.options = $.extend( {}, defaults, options) ;
         this._defaults = defaults;
         this._name = pluginName;
         /* Variables locales au plugin */
@@ -59,10 +58,11 @@
         this.activeEditor= void(0),
         this.doDebug=true,
 
-        this.init();
+        this.init(options);
     }
 
-    Plugin.prototype.init = function() {
+    Plugin.prototype.init = function(options) {
+        this.options = $.extend( {}, defaults, options) ;
         /* Creation des 3 éditeurs de texte */
         this.htmlEditor = ace.edit(this.options.htmlEditorId);
         this.htmlEditor.$blockScrolling = Infinity;
@@ -204,34 +204,34 @@
         $.get(this.options.files.preHtml)
             .then(function(data){
                 this.datas.preHtml=data;
-                return($.get(this.options.files.html))
+                return($.ajax({url:this.options.files.html,dataType:"text"}))
             }.bind(this))
             .then(function(data){
                 this.datas.html=data;
                 this.htmlEditor.getSession().setValue(this.datas.html);
-                return($.get(this.options.files.postHtml))
+                return($.ajax({url:this.options.files.postHtml,dataType:"text"}))
             }.bind(this))
             .then(function(data){
                 this.postHhtmlData=data;
-                return($.get(this.options.files.preCss))
+                return($.ajax({url:this.options.files.preCss,dataType:"text"}))
             }.bind(this))
             .then(function(data){
                 this.datas.preCss=data;
-                return($.get(this.options.files.css))
+                return($.ajax({url:this.options.files.css,dataType:"text"}))
             }.bind(this))
             .then(function(data){
                 this.datas.css=data;
                 this.cssEditor.getSession().setValue(this.datas.css);
-                return($.get(this.options.files.preJavascript))
+                return($.ajax({url:this.options.files.preJavascript,dataType:"text"}))
             }.bind(this))
             .then(function(data){
                 this.datas.preJavascript=data;
-                return($.get(this.options.files.javascript))
+                return($.ajax({url:this.options.files.javascript,dataType:"text"}))
             }.bind(this))
             .then(function(data){
                 this.datas.javascript=data;
                 this.javascriptEditor.getSession().setValue(this.datas.javascript);
-                return($.get(this.options.files.postJavascript))
+                return($.ajax({url:this.options.files.postJavascript,dataType:"text"}))
             }.bind(this))
             .then(function(data){
                 this.datas.postJavascript=data;
@@ -362,6 +362,7 @@
         return this.each(function () {
             if (!$.data(this, 'plugin_' + pluginName)) {
                 $.data(this, 'plugin_' + pluginName, new Plugin( this, options ));
+
             }
         });
     };

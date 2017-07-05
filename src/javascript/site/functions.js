@@ -97,9 +97,13 @@ $('#JavascriptModal').on('show.bs.modal', function (event) {
   				url:newUrl2load,
   				dataType:'json'
   			}).done(function(data){
-					console.log(data);
-          console.log("chargement de icnExercices")
-  				$("body").icnExercices(data);
+					if ($.data($("body")[0],'plugin_icnExercices') !== undefined) {
+						$.data($("body")[0],'plugin_icnExercices').init(data);
+            console.log("reInitialisation du plugin");
+					} else {
+  					$("body").icnExercices(data);
+            console.log("première instantiation du plugin");
+					}
   			});
   		});
 
