@@ -290,20 +290,10 @@
     };
 
     Plugin.prototype.runExample = function() {
-        this.debug('entering runExample ...');
-
-        // Create new frame. May be not totally correct because CSS and javascript
-        // can be after closing html tag but browsers can cope with that
-        var myFrame = $('#exampleFrame')[0].contentWindow.document;
-        document.getElementById('exampleFrame').contentWindow.location.reload(true);
-
-        window.setTimeout(function(){
-            myFrame = $('#exampleFrame')[0].contentWindow.document;
-            this.debug(this.getPage());
-            myFrame.open();
-            myFrame.write(this.getPage())
-            myFrame.close();
-        }.bind(this),400);
+        myFrame = $('#exampleFrame')[0].contentWindow.document;
+        myFrame.open();
+        myFrame.write(this.getPage())
+        myFrame.close();
     };
 
     Plugin.prototype.getPage = function() {
