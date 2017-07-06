@@ -170,7 +170,19 @@
         }.bind(this));
 
         $('#resetButton').on('click.'+pluginName,function() {
-          this.resetExample();
+          $.ajax({url:this.options.files.html,dataType:"text"})
+              .then(function(data){
+                  this.datas.html=data;
+                  return($.ajax({url:this.options.files.css,dataType:"text"}))
+              }.bind(this))
+              .then(function(data){
+                  this.datas.css=data;
+                  return($.ajax({url:this.options.files.javascript,dataType:"text"}))
+              }.bind(this))
+              .then(function(data){
+                  this.datas.javascript=data;
+                  this.resetExample();
+              }.bind(this))
         }.bind(this));
 
         $('#zipButton').on('click.'+pluginName,function() {
@@ -212,7 +224,7 @@
                 return($.ajax({url:this.options.files.postHtml,dataType:"text"}))
             }.bind(this))
             .then(function(data){
-                this.postHhtmlData=data;
+                this.datas.postHtml=data;
                 return($.ajax({url:this.options.files.preCss,dataType:"text"}))
             }.bind(this))
             .then(function(data){
@@ -314,6 +326,9 @@
         var htmlContent= this.datas.preHtml + "\r\n";
         htmlContent +=  this.htmlEditor.getSession().getValue()+ "\r\n";
         htmlContent += this.datas.postHtml;
+        htmlContent = htmlContent
+          .replace('<!--CsS-->','<link href="style.css" rel="stylesheet">')
+          .replace('<!--ScripT-->','<script type="text/javascript" src="script.js" ></script>');
         var cssContent= this.datas.preCss + "\r\n";
         cssContent +=  this.cssEditor.getSession().getValue()+ "\r\n";
         var javascriptContent= this.datas.preJavascript + "\r\n";

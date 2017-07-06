@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Added
  - download Zip of the files
  - save and restore edited files inside a session
+ - placeHolder in scripts for download that works
 
 ### Changed
  - transformed example Class into a real jQuery plugin
